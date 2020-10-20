@@ -16,31 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #pragma once
 
 //#define USE_MATRIX_I2C
-#ifdef KEYBOARD_crkbd_rev1_legacy
-#    undef USE_I2C
-#    define USE_SERIAL
-#endif
+// #ifdef KEYBOARD_crkbd_rev1_legacy
+// #    undef USE_I2C
+// #    define USE_SERIAL
+// #endif
 
 /* Select hand configuration */
 
-#define MASTER_LEFT
+//#define MASTER_LEFT
 // #define MASTER_RIGHT
-// #define EE_HANDS
+#define EE_HANDS
+
+//#define USE_SERIAL_PD2
+#undef USE_I2C
+#undef SSD1306OLED
 
 #define USE_SERIAL_PD2
 
+#define OLED_FONT_H "keyboards/crkbd/rev1/common/keymaps/claudxsm/glcdfont.c"
 
-#undef RGBLED_NUM
-#define RGBLIGHT_ANIMATIONS
-#define RGBLED_NUM 27
-#define RGBLIGHT_LIMIT_VAL 120
-#define RGBLIGHT_HUE_STEP 10
-#define RGBLIGHT_SAT_STEP 17
-#define RGBLIGHT_VAL_STEP 17
+//#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
 
-#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+#define OLED_DISABLE_TIMEOUT
+#define TAPPING_TERM_PER_KEY
