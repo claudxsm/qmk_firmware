@@ -25,17 +25,20 @@ extern uint8_t is_master;
 #define _RAISE 2
 #define _FN 3
 
+enum my_keycodes { KC_CCCV = SAFE_RANGE, KC_SELCUT, KC_UNRE };
+enum { TD_QUOT = 0 };
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_BASE] = LAYOUT_split_3x6_3(  
     //,----------------------------------------------------.      ,----------------------------------------------.
         KC_TAB,     KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,           KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,       KC_BSPC,
     //|------------ +------ +-----  +---``--- +------ +------|        ------ +-----  +------ +------ +---------- +------|
-        KC_LCTL,    KC_A,   KC_S,   KC_D,   KC_F,   KC_G,           KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,    KC_QUOT,
+        KC_LCTL,    KC_A,   KC_S,   KC_D,   LSFT_T(KC_F),   KC_G,     KC_H,   RSFT_T(KC_J),   KC_K,   KC_L,   KC_SCLN,    TD(TD_QUOT),
     //|------------ +------ +-----  +------ +------ +------|        ------ +-----  +------ +------ +---------- +------|
         KC_LSFT,    KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,           KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,    KC_RSHIFT,
     //|------------ +------ +-----  +------ +------ +------|        ------ +-----  +------ +------ +---------- +------|
-        KC_LALT,        MO(_LOWER),         LGUI_T(KC_SPC),         LT(_FN, KC_ENTER),   MO(_RAISE),  LGUI(KC_C)   
+        KC_LALT,        MO(_LOWER),         LGUI_T(KC_SPC),         LT(_FN, KC_ENTER),   MO(_RAISE),  KC_CCCV   
     //,----------------------------------------------------.      ,----------------------------------------------.
     ),
 
@@ -47,19 +50,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         KC_CAPSLOCK, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_1,  KC_2,   KC_3,  KC_DOT,        _______,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX,        _______,                        _______,         KC_0,           LGUI(KC_X)  
+        _______,    XXXXXXX,        _______,                        _______,         KC_0,           KC_UNRE
     //,----------------------------------------------------.      ,----------------------------------------------.
     ),
 
 [_RAISE] = LAYOUT_split_3x6_3(  
     //,----------------------------------------------------.      ,----------------------------------------------.
-        KC_ESC,    KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,       KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSLS,    KC_DELETE,
+        KC_ESC,    KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,        KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSLS,    KC_DELETE,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_CIRC,    KC_MINS, KC_EQL, KC_LBRC, KC_RBRC, KC_COLON,     KC_GRV,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         _______,    XXXXXXX, XXXXXXX, KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, XXXXXXX,    KC_UNDS, KC_QUESTION, KC_LCBR, KC_RCBR, KC_PIPE,    _______,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX,        _______,                         _______,       _______,        LGUI(KC_V)
+        _______,    XXXXXXX,        _______,                         _______,       _______,        KC_SELCUT
     //,----------------------------------------------------.      ,----------------------------------------------.
     ),
 
@@ -81,8 +84,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #    define KEYLOGGER_LENGTH 1  //((int)(OLED_DISPLAY_HEIGHT / OLED_FONT_WIDTH))
 #endif
 
-static uint32_t oled_timer                       = 0;
-static uint16_t log_timer                        = 0;
+static uint32_t oled_timer = 0;
+static uint16_t log_timer  = 0;
+static uint16_t copy_paste_timer;
+static uint16_t select_cut_timer;
+static uint16_t undo_redo_timer;
 static char     keylog_str[KEYLOGGER_LENGTH + 1] = {"\n"};
 
 // clang-format off
@@ -106,6 +112,8 @@ static const char PROGMEM code_to_name[0xFF] = {
     ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '        // Fx
 };
 // clang-format on
+
+qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE)};
 
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
@@ -250,15 +258,15 @@ void render_status_main(void) {
 
     // don't care render_default_layer_state();
     render_layer_state();
-    oled_write_ln_P(" ", false);
+    oled_write_ln_P("", false);
     render_keylock_status();
     // render_bootmagic_status();
 
-    oled_write_ln_P(" ", false);
+    oled_write_ln_P("", false);
     // don't care render_user_status();
 
     render_keylogger_status();
-    oled_write_ln_P(" ", false);
+    oled_write_ln_P("", false);
 }
 
 void oled_render_logo(void) {
@@ -303,17 +311,67 @@ void oled_task_user(void) {
 
 bool process_record_user_oled(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-#    ifdef OLED_DRIVER_ENABLE
         oled_timer = timer_read32();
         add_keylog(keycode);
-#    endif
     }
     return true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#    ifdef OLED_DRIVER_ENABLE
     process_record_user_oled(keycode, record);
+#    endif
+
+    switch (keycode) {
+        case KC_CCCV:  // One key copy/paste
+            if (record->event.pressed) {
+                copy_paste_timer = timer_read();
+            } else {
+                if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold, copy
+                    tap_code16(LGUI(KC_C));
+                } else {
+                    tap_code16(LGUI(KC_V));  // Tap, paste
+                }
+            }
+            break;
+        case KC_SELCUT:
+            if (record->event.pressed) {
+                select_cut_timer = timer_read();
+            } else {
+                if (timer_elapsed(select_cut_timer) > TAPPING_TERM) {  // Hold, select all
+                    tap_code16(LGUI(KC_A));
+                } else {
+                    tap_code16(LGUI(KC_X));  // Tap, cut
+                }
+            }
+            break;
+        case KC_UNRE:
+            if (record->event.pressed) {
+                undo_redo_timer = timer_read();
+            } else {
+                if (timer_elapsed(undo_redo_timer) > TAPPING_TERM) {  // Hold, redo
+                    tap_code16(SGUI(KC_Z));
+                } else {
+                    tap_code16(LGUI(KC_Z));  // Tap, undo
+                }
+            }
+            break;
+    }
     return true;
 }
 
 #endif  // OLED_DRIVER_ENABLE
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LGUI_T(KC_SPC):
+        case LT(_FN, KC_ENTER):
+            return TAPPING_TERM + 400;
+        // case SFT_T(KC_SPC):
+        //    return TAPPING_TERM + 1250;
+        // case LT(1, KC_GRV):
+        //    return 130;
+        default:
+            return TAPPING_TERM;
+    }
+}
