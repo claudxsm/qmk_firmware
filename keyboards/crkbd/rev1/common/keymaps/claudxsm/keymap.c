@@ -56,11 +56,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_RAISE] = LAYOUT_split_3x6_3(  
     //,----------------------------------------------------.      ,----------------------------------------------.
-        KC_ESC,    KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,        KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSLS,    KC_DELETE,
+        KC_ESC,    KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,        KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,    KC_DELETE,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_CIRC,    KC_MINS, KC_EQL, KC_LBRC, KC_RBRC, KC_COLON,     KC_GRV,
+        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_CIRC,    KC_MINS, KC_EQL, KC_LPRN, KC_RPRN, KC_COLON,     KC_GRV,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX, XXXXXXX, KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, XXXXXXX,    KC_UNDS, KC_QUESTION, KC_LCBR, KC_RCBR, KC_PIPE,    _______,
+        _______,    XXXXXXX, XXXXXXX, KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, XXXXXXX,    KC_UNDS, KC_QUESTION, KC_LBRC, KC_RBRC, KC_PIPE,    _______,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         _______,    XXXXXXX,        _______,                         _______,       _______,        KC_SELCUT
     //,----------------------------------------------------.      ,----------------------------------------------.
@@ -177,7 +177,7 @@ void render_keylogger_status(void) { oled_write(keylog_str, false); }
 void render_layer_state(void) {
     switch (get_highest_layer(layer_state)) {
         case _BASE:
-            oled_write_ln_P(PSTR("BASE"), false);
+            oled_write_ln_P(PSTR(""), false);
             break;
         case _LOWER:
             oled_write_P(PSTR("LOWER"), false);
@@ -258,15 +258,15 @@ void render_status_main(void) {
 
     // don't care render_default_layer_state();
     render_layer_state();
-    oled_write_ln_P("", false);
+    oled_write_ln_P(PSTR(""), false);
     render_keylock_status();
     // render_bootmagic_status();
 
-    oled_write_ln_P("", false);
+    oled_write_ln_P(PSTR(""), false);
     // don't care render_user_status();
 
     render_keylogger_status();
-    oled_write_ln_P("", false);
+    oled_write_ln_P(PSTR(""), false);
 }
 
 void oled_render_logo(void) {
@@ -338,10 +338,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 select_cut_timer = timer_read();
             } else {
-                if (timer_elapsed(select_cut_timer) > TAPPING_TERM) {  // Hold, select all
-                    tap_code16(LGUI(KC_A));
+                if (timer_elapsed(select_cut_timer) > TAPPING_TERM) {  // Hold, cut
+                    tap_code16(LGUI(KC_X));
                 } else {
-                    tap_code16(LGUI(KC_X));  // Tap, cut
+                    tap_code16(LGUI(KC_A));  // Tap, select all
                 }
             }
             break;
@@ -364,9 +364,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case LSFT_T(KC_F):
+        case RSFT_T(KC_J):
+            return 150;  // was 200
         case LGUI_T(KC_SPC):
         case LT(_FN, KC_ENTER):
-            return TAPPING_TERM + 400;
+            return TAPPING_TERM + 300;
         // case SFT_T(KC_SPC):
         //    return TAPPING_TERM + 1250;
         // case LT(1, KC_GRV):
