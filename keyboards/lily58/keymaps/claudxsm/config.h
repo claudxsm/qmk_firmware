@@ -50,3 +50,15 @@ Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck
 #define RGBLIGHT_ANIMATIONS
 #define RGBLIGHT_SLEEP
 */
+
+
+// don't think any of these are working yet
+
+//#define MOUSEKEY_WHEEL_DELAY 300        //Delay between pressing a wheel key and wheel movement
+// #define MOUSEKEY_WHEEL_INTERVAL 5     //Time between wheel movements, low=fast
+// #define MOUSEKEY_WHEEL_MAX_SPEED 200      //Maximum number of scroll steps per scroll action
+// #define MOUSEKEY_WHEEL_TIME_TO_MAX 40   //Time until maximum scroll speed is reached
+#define MK_3_SPEED 
+#define MK_W_OFFSET_0 1     //Scroll steps per scroll action (KC_ACL2)
+#define MK_W_INTERVAL_0 5  //Time between scroll steps (KC_ACL2)
+
