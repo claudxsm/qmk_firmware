@@ -26,7 +26,7 @@ extern uint8_t is_master;
 #define _FN 3
 
 enum my_keycodes { KC_CCCV = SAFE_RANGE, KC_SELCUT, KC_UNRE };
-enum { TD_QUOT = 0 };
+enum { TD_QUOT = 0, TD_PAGING };
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -48,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         _______,    XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX,   XXXXXXX, KC_4,  KC_5,   KC_6,   KC_KP_PLUS,     XXXXXXX,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        KC_CAPSLOCK, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_1,  KC_2,   KC_3,  KC_DOT,        _______,
+        KC_CAPSLOCK, XXXXXXX, KC_HOME, TD(TD_PAGING), KC_END, XXXXXXX,    XXXXXXX, KC_1,  KC_2,   KC_3,  KC_DOT,        _______,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         _______,    XXXXXXX,        _______,                        _______,         KC_0,           KC_UNRE
     //,----------------------------------------------------.      ,----------------------------------------------.
@@ -70,11 +70,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,----------------------------------------------------.      ,----------------------------------------------.
         KC_F1,      KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,          KC_F7,  KC_F8,  KC_F9,  KC_F10, KC_F11,         KC_F12, 
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, KC_HOME, KC_END, XXXXXXX, XXXXXXX,  _______,                
+        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  _______,                
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_INSERT, KC_PGUP, KC_PGDOWN, XXXXXXX, XXXXXXX, RESET,  
+        RESET,      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_INSERT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX,        _______,                         _______,         XXXXXXX,      _______       
+        _______,      XXXXXXX,        _______,                         _______,         XXXXXXX,      _______       
     //,----------------------------------------------------.      ,----------------------------------------------.
 )
 };
@@ -113,7 +113,7 @@ static const char PROGMEM code_to_name[0xFF] = {
 };
 // clang-format on
 
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE)};
+qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE), [TD_PAGING] = ACTION_TAP_DANCE_DOUBLE(KC_PGDOWN, KC_PGUP)};
 
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
