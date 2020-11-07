@@ -351,6 +351,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #endif  // OLED_DRIVER_ENABLE
 
+// TAPPING_TERM_PER_KEY
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_F):
@@ -359,11 +360,33 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case LGUI_T(KC_SPC):
         case LT(_FN, KC_ENTER):
             return 600;
+        case TD(TD_CAPS):
+            return 600;
         // case SFT_T(KC_SPC):
         //    return TAPPING_TERM + 1250;
         // case LT(1, KC_GRV):
         //    return 130;
         default:
             return TAPPING_TERM;
+    }
+}
+
+// IGNORE_MOD_TAP_INTERRUPT_PER_KEY
+bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LGUI_T(KC_SPC):
+            return true;
+        default:
+            return false;
+    }
+}
+
+// PERMISSIVE_HOLD_PER_KEY
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LGUI_T(KC_SPC):
+            return false;
+        default:
+            return true;
     }
 }
