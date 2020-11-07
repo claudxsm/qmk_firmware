@@ -26,7 +26,7 @@ extern uint8_t is_master;
 #define _FN 3
 
 enum my_keycodes { KC_CCCV = SAFE_RANGE, KC_SELCUT, KC_UNRE };
-enum { TD_QUOT = 0, TD_PAGING };
+enum { TD_QUOT = 0, TD_PAGING, TD_DASH };
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,----------------------------------------------------.      ,----------------------------------------------.
         KC_TILD,    KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,        KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,    KC_DELETE,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
-        _______,    XXXXXXX, XXXXXXX, XXXXXXX, KC_CIRC, KC_PLUS,  KC_MINS, KC_EQL,  KC_LPRN, KC_RPRN, KC_COLON,   KC_GRV,
+        _______,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   KC_CIRC,  KC_PLUS, TD(TD_DASH),  KC_LPRN, KC_RPRN, KC_COLON,   KC_GRV,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
         KC_CAPS,    XXXXXXX, XXXXXXX, KC_LABK, KC_RABK, XXXXXXX,    KC_UNDS, KC_QUES, KC_LBRC, KC_RBRC, KC_PIPE,    _______,
     //|------------ +------ +-----  +------ +------ +------|        |------ +-----  +------ +------ +---------- +------|
@@ -111,9 +111,13 @@ static const char PROGMEM code_to_name[0xFF] = {
     'C', 'S', 'A', 'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // Ex
     ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '        // Fx
 };
-// clang-format on
 
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE), [TD_PAGING] = ACTION_TAP_DANCE_DOUBLE(KC_PGDOWN, KC_PGUP)};
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE), 
+    [TD_PAGING] = ACTION_TAP_DANCE_DOUBLE(KC_PGDOWN, KC_PGUP), 
+    [TD_DASH] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, KC_EQL)};
+
+// clang-format on
 
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
@@ -366,10 +370,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_F):
         case RSFT_T(KC_J):
-            return 140;  // was 200
+            return 170;  // was 200
         case LGUI_T(KC_SPC):
         case LT(_FN, KC_ENTER):
-            return 550;
+            return 600;
         // case SFT_T(KC_SPC):
         //    return TAPPING_TERM + 1250;
         // case LT(1, KC_GRV):
