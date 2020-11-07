@@ -26,14 +26,14 @@ extern uint8_t is_master;
 #define _FN 3
 
 enum my_keycodes { KC_CCCV = SAFE_RANGE, KC_SELCUT, KC_UNRE };
-enum { TD_QUOT = 0, TD_PAGING, TD_DASH };
+enum { TD_QUOT = 0, TD_PAGING, TD_DASH, TD_CAPS };
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_BASE] = LAYOUT_split_3x6_3( 
-    KC_TAB,    KC_Q, KC_W, KC_E, KC_R,         KC_T,      KC_Y, KC_U,         KC_I,    KC_O,   KC_P,      KC_BSPC,
-    KC_LCTL,   KC_A, KC_S, KC_D, LSFT_T(KC_F), KC_G,      KC_H, RSFT_T(KC_J), KC_K,    KC_L,   KC_SCLN,   TD(TD_QUOT),
-    KC_LSFT,   KC_Z, KC_X, KC_C, KC_V,         KC_B,      KC_N, KC_M,         KC_COMM, KC_DOT, KC_SLSH,   KC_RSHIFT,
+    KC_TAB,      KC_Q, KC_W, KC_E, KC_R,         KC_T,      KC_Y, KC_U,         KC_I,    KC_O,   KC_P,      KC_BSPC,
+    KC_LCTL,     KC_A, KC_S, KC_D, LSFT_T(KC_F), KC_G,      KC_H, RSFT_T(KC_J), KC_K,    KC_L,   KC_SCLN,   TD(TD_QUOT),
+    TD(TD_CAPS), KC_Z, KC_X, KC_C, KC_V,         KC_B,      KC_N, KC_M,         KC_COMM, KC_DOT, KC_SLSH,   KC_RSHIFT,
     
     KC_LALT, MO(_LOWER), LGUI_T(KC_SPC),                  LT(_FN, KC_ENTER), MO(_RAISE), KC_CCCV   
 ),
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_RAISE] = LAYOUT_split_3x6_3(  
     KC_TILD,   KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,        KC_AMPR, KC_ASTR,     KC_LCBR, KC_RCBR, KC_BSLS,  KC_DELETE,
     _______,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_CIRC,        KC_PLUS, TD(TD_DASH), KC_LPRN, KC_RPRN, KC_COLON, KC_GRV,
-    KC_CAPS,   XXXXXXX, XXXXXXX, KC_LABK, KC_RABK, XXXXXXX,        KC_UNDS, KC_QUES,     KC_LBRC, KC_RBRC, KC_PIPE,  _______,
+    _______,   XXXXXXX, XXXXXXX, KC_LABK, KC_RABK, XXXXXXX,        KC_UNDS, KC_QUES,     KC_LBRC, KC_RBRC, KC_PIPE,  _______,
    
     _______, XXXXXXX, _______,                                     _______, _______,     KC_SELCUT
 ),
@@ -98,7 +98,9 @@ static const char PROGMEM code_to_name[0xFF] = {
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE), 
     [TD_PAGING] = ACTION_TAP_DANCE_DOUBLE(KC_PGDOWN, KC_PGUP), 
-    [TD_DASH] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, KC_EQL)};
+    [TD_DASH] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, KC_EQL),
+    [TD_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS)
+};
 
 // clang-format on
 
