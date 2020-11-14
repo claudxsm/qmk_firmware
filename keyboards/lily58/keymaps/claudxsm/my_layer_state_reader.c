@@ -25,7 +25,7 @@ const char *read_layer_state(void) {
   switch (get_highest_layer(layer_state))
   {
   case _BASE:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default");
+    snprintf(layer_state_str, sizeof(layer_state_str), " ");
     break;
   case _RAISE:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Raise");

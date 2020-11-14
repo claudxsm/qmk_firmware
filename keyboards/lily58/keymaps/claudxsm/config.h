@@ -1,5 +1,5 @@
 /*
-Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck 
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck
  *
  * You are free to:
  *
@@ -24,15 +24,15 @@ Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck
 
 #define ENCODERS_PAD_A { F4 }
 #define ENCODERS_PAD_B { F5 }
-#define ENCODER_RESOLUTION 4
+#define ENCODER_RESOLUTION 1
 
 // #define TAPPING_FORCE_HOLD
 // #define TAPPING_TERM 180
 
-#define TAPPING_TERM 300
+#define TAPPING_TERM 250
 #define TAPPING_TERM_PER_KEY
 #define IGNORE_MOD_TAP_INTERRUPT
-#define PERMISSIVE_HOLD
+//#define PERMISSIVE_HOLD
 
 
 // #undef RGBLED_NUM
@@ -58,7 +58,7 @@ Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck
 // #define MOUSEKEY_WHEEL_INTERVAL 5     //Time between wheel movements, low=fast
 // #define MOUSEKEY_WHEEL_MAX_SPEED 200      //Maximum number of scroll steps per scroll action
 // #define MOUSEKEY_WHEEL_TIME_TO_MAX 40   //Time until maximum scroll speed is reached
-#define MK_3_SPEED 
+#define MK_3_SPEED
 #define MK_W_OFFSET_0 1     //Scroll steps per scroll action (KC_ACL2)
 #define MK_W_INTERVAL_0 5  //Time between scroll steps (KC_ACL2)
 

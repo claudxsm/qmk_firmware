@@ -26,7 +26,7 @@ enum custom_keycodes {
   KC_SELCUT,
   KC_UNRE,
 };
-enum { TD_QUOT = 0 };
+enum { TD_QUOT = 0, TD_PAGING, TD_DASH, TD_CAPS };
 
 
 //  The press-action of the encoder is controlled by the switch that it replaces - simply change what it does in the regular keymap area.
@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
   KC_LGUI, KC_A,    KC_S,    KC_D, LSFT_T(KC_F), KC_G,                    KC_H, RSFT_T(KC_J), KC_K,    KC_L,  KC_SCLN, TD(TD_QUOT),
-  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
+  TD(TD_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
                              KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  TG(_GAMING), KC_CCCV
   ),
 
@@ -46,21 +46,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,  _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______,
   KC_MINUS,  _______, _______, _______, KC_F,    _______,                       _______, KC_J,    _______, _______, _______, _______,
   KC_KP_PLUS,  _______, _______, _______, _______, _______, KC_HOME,     KC_ESC, _______, _______, _______, _______, _______, KC_TILD,
-                             KC_LCTL, KC_LALT, KC_LSFT, KC_SPC,      _______, KC_LGUI, _______, KC_ASTR96ou'p/
+                             KC_LCTL, KC_LALT, KC_LSFT, KC_SPC,      _______, KC_LGUI, _______, KC_ASTR
   ),
 
   [_LOWER] = LAYOUT(
-  KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  KC_TILD,     KC_NO,   KC_NO,   KC_UP,     KC_NO,    KC_NO,                     KC_NO,   KC_7,   KC_8, KC_9,  KC_KP_MINUS,  KC_TRNS,
-  KC_TRNS,     KC_NO,   KC_LEFT, KC_DOWN,   KC_RIGHT, KC_NO,                     KC_NO,   KC_4,   KC_5, KC_6,  KC_KP_PLUS,   KC_NO,
-  KC_CAPSLOCK, KC_NO,   KC_HOME, KC_PGDOWN, KC_END,   KC_NO,  KC_TRNS,   KC_NO,  KC_NO,   KC_1,   KC_2, KC_3,  KC_DOT,   KC_TRNS,
+  KC_ESC,     KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+  _______,     KC_NO,   KC_NO,   KC_UP,     KC_NO,    KC_NO,                     KC_NO,   KC_7,   KC_8, KC_9,  KC_KP_MINUS,  KC_TRNS,
+  _______,     KC_NO,   KC_LEFT, KC_DOWN,   KC_RIGHT, KC_NO,                     KC_NO,   KC_4,   KC_5, KC_6,  KC_KP_PLUS,   KC_NO,
+  _______, KC_NO,   KC_HOME, TD(TD_PAGING), KC_END,   KC_NO,  KC_TRNS,   KC_NO,  KC_NO,   KC_1,   KC_2, KC_3,  KC_DOT,   KC_TRNS,
                              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_UNRE
   ),
 
   [_RAISE] = LAYOUT(
-  KC_ESC,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,
-  KC_ESC,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   KC_DELETE,
-  KC_TRNS, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                    KC_MINS, KC_EQL,  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
+  KC_TILD,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,
+  _______,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   KC_DELETE,
+  KC_TRNS, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                  KC_PLUS, TD(TD_DASH),  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
   KC_TRNS, KC_NO,   KC_NO,  KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, KC_NO, KC_TRNS,   KC_NO,   KC_UNDS, KC_QUESTION, KC_LBRC, KC_RBRC, KC_PIPE,      KC_TRNS,
                             KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_SELCUT
   ),
@@ -68,8 +68,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_FN] = LAYOUT(
   XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,      KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F12,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  RESET,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_INSERT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_VOLU,   KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
+  RESET,   XXXXXXX, XXXXXXX, XXXXXXX, KC_INSERT, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_MPRV, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______,  _______,  _______, _______, _______
   )
 };
@@ -79,8 +79,13 @@ static uint16_t copy_paste_timer;
 static uint16_t select_cut_timer;
 static uint16_t undo_redo_timer;
 
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE)};
 
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE),
+    [TD_PAGING] = ACTION_TAP_DANCE_DOUBLE(KC_PGDOWN, KC_PGUP),
+    [TD_DASH] = ACTION_TAP_DANCE_DOUBLE(KC_MINS, KC_EQL),
+    [TD_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS)
+};
 
 int RGB_current_mode;
 
@@ -225,6 +230,14 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 void encoder_update_user(uint8_t index, bool clockwise) {
   switch (get_highest_layer(layer_state))
   {
+      case _FN:
+        if(clockwise) {
+            tap_code(KC_VOLU);
+        }
+        else {
+            tap_code(KC_VOLD);
+        }
+        break;
     case _GAMING:
       if (clockwise) {
         tap_code(KC_LBRACKET);
