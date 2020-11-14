@@ -1,4 +1,4 @@
-/* Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck 
+/* Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 2020 Max Drasbeck
  *
  * You are free to:
  *
@@ -12,19 +12,19 @@
 #include QMK_KEYBOARD_H
 extern uint8_t is_master;
 
+
 enum layers {
-  _QWERTY,
+  _BASE,
+  _GAMING,
   _LOWER,
   _RAISE,
-  _FN,
+  _FN
 };
 
 enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISE,
-  FN,
-  KC_CCCV, KC_SELCUT, KC_UNRE 
+  KC_CCCV = SAFE_RANGE,
+  KC_SELCUT,
+  KC_UNRE,
 };
 enum { TD_QUOT = 0 };
 
@@ -33,12 +33,20 @@ enum { TD_QUOT = 0 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_QWERTY] = LAYOUT(
+  [_BASE] = LAYOUT(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-  KC_LGUI, KC_A,    KC_S,    KC_D, LSFT_T(KC_F), KC_G,                    KC_H, RSFT_T(KC_J), KC_K,    KC_L,    KC_SCLN, TD(TD_QUOT),
-  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,    KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSHIFT,
-                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),   KC_NO, KC_CCCV
+  KC_LGUI, KC_A,    KC_S,    KC_D, LSFT_T(KC_F), KC_G,                    KC_H, RSFT_T(KC_J), KC_K,    KC_L,  KC_SCLN, TD(TD_QUOT),
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
+                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  TG(_GAMING), KC_CCCV
+  ),
+
+  [_GAMING] = LAYOUT(
+  KC_GRV,  _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, KC_ESC,
+  KC_TAB,  _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______,
+  KC_MINUS,  _______, _______, _______, KC_F,    _______,                       _______, KC_J,    _______, _______, _______, _______,
+  KC_KP_PLUS,  _______, _______, _______, _______, _______, KC_HOME,     KC_ESC, _______, _______, _______, _______, _______, KC_TILD,
+                             KC_LCTL, KC_LALT, KC_LSFT, KC_SPC,      _______, KC_LGUI, _______, KC_ASTR96ou'p/
   ),
 
   [_LOWER] = LAYOUT(
@@ -49,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_UNRE
   ),
 
-  [_RAISE] = LAYOUT( 
+  [_RAISE] = LAYOUT(
   KC_ESC,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,
   KC_ESC,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   KC_DELETE,
   KC_TRNS, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                    KC_MINS, KC_EQL,  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
@@ -69,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 static uint16_t copy_paste_timer;
 static uint16_t select_cut_timer;
-static uint16_t undo_redo_timer; 
+static uint16_t undo_redo_timer;
 
 qk_tap_dance_action_t tap_dance_actions[] = {[TD_QUOT] = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DOUBLE_QUOTE)};
 
@@ -162,7 +170,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     // case QWERTY:
     //   if (record->event.pressed) {
-    //     set_single_persistent_default_layer(_QWERTY);
+    //     set_single_persistent_default_layer(_BASE);
     //   }
     //   return false;
     //   break;
@@ -215,12 +223,22 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef ENCODER_ENABLE
 void encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-       oled_write_ln_P(PSTR("2222"), false);
-      tap_code(KC_MS_WH_UP);
-    } else {
-       oled_write_ln_P(PSTR("3333"), false);
-      tap_code(KC_MS_WH_DOWN);
-    }
+  switch (get_highest_layer(layer_state))
+  {
+    case _GAMING:
+      if (clockwise) {
+        tap_code(KC_LBRACKET);
+      } else {
+        tap_code(KC_RBRACKET);
+      }
+      break;
+    default:
+      if (clockwise) {
+        tap_code(KC_MS_WH_UP);
+      } else {
+        tap_code(KC_MS_WH_DOWN);
+      }
+      break;
+  }
 }
 #endif
