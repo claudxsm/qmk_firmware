@@ -109,7 +109,6 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
 #ifndef SPLIT_KEYBOARD
         if (keycode == RESET && !is_master) {
             return false;
-            vdcs
         }
 #endif
     }
@@ -118,15 +117,12 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-#    ifndef SPLIT_KEYBOARD
     if (is_master) {
-#    endif
         return OLED_ROTATION_270;
-#    ifndef SPLIT_KEYBOARD
     } else {
-        return rotation;
+        // return rotation;
+        return OLED_ROTATION_90;
     }
-#    endif
 }
 
 void add_keylog(uint16_t keycode) {
