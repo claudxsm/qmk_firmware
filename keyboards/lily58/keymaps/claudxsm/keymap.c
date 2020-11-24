@@ -10,8 +10,8 @@
  */
 
 #include QMK_KEYBOARD_H
+#include <stdio.h>
 extern uint8_t is_master;
-
 
 enum layers {
   _BASE,
@@ -35,10 +35,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_BASE] = LAYOUT(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
-  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_DELETE,
   KC_LGUI, KC_A,    KC_S,    KC_D, LSFT_T(KC_F), KC_G,                    KC_H, RSFT_T(KC_J), KC_K,    KC_L,  KC_SCLN, TD(TD_QUOT),
   TD(TD_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
-                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  TG(_GAMING), KC_CCCV
+                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  _______, KC_CCCV
   ),
 
   [_GAMING] = LAYOUT(
@@ -50,16 +50,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_LOWER] = LAYOUT(
-  KC_ESC,     KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  _______,     KC_NO,   KC_NO,   KC_UP,     KC_NO,    KC_NO,                     KC_NO,   KC_7,   KC_8, KC_9,  KC_KP_MINUS,  KC_TRNS,
+  KC_ESC,     KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, _______,
+  _______,     KC_NO,   KC_NO,   KC_UP,     KC_NO,    KC_NO,                     KC_NO,   KC_7,   KC_8, KC_9,  KC_KP_MINUS,  _______,
   _______,     KC_NO,   KC_LEFT, KC_DOWN,   KC_RIGHT, KC_NO,                     KC_NO,   KC_4,   KC_5, KC_6,  KC_KP_PLUS,   KC_NO,
   _______, KC_NO,   KC_HOME, TD(TD_PAGING), KC_END,   KC_NO,  KC_TRNS,   KC_NO,  KC_NO,   KC_1,   KC_2, KC_3,  KC_DOT,   KC_TRNS,
                              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_UNRE
   ),
 
   [_RAISE] = LAYOUT(
-  KC_TILD,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,
-  _______,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   KC_DELETE,
+  KC_TILD,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     _______,
+  _______,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   _______,
   KC_TRNS, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                  KC_PLUS, TD(TD_DASH),  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
   KC_TRNS, KC_NO,   KC_NO,  KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, KC_NO, KC_TRNS,   KC_NO,   KC_UNDS, KC_QUESTION, KC_LBRC, KC_RBRC, KC_PIPE,      KC_TRNS,
                             KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_SELCUT
@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F12,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_VOLU,   KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
   RESET,   XXXXXXX, XXXXXXX, XXXXXXX, KC_INSERT, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_MPRV, XXXXXXX, XXXXXXX, XXXXXXX,
-                             _______, _______, _______, _______,  _______,  _______, _______, _______
+                             _______, _______, _______, _______,  _______,  _______, TG(_GAMING), _______
   )
 };
 
@@ -116,10 +116,30 @@ void set_keylog(uint16_t keycode, keyrecord_t *record);
 // void set_timelog(void);
 // const char *read_timelog(void);
 
+
+char lock_state_str[24];
+const char *read_keylock_state(void) {
+    led_t led_state = host_keyboard_led_state();
+
+    //if (led_state.num_lock) {
+    //    snprintf(lock_state_str, sizeof(lock_state_str), "NUM ");
+    //} else
+    if (led_state.caps_lock) {
+        snprintf(lock_state_str, sizeof(lock_state_str), "CAPS ");
+    } else if (led_state.scroll_lock) {
+        snprintf(lock_state_str, sizeof(lock_state_str), "SCR ");
+    } else {
+        snprintf(lock_state_str, sizeof(lock_state_str), " ");
+    }
+    return lock_state_str;
+}
+
+
 void oled_task_user(void) {
   if (is_keyboard_master()) {
     // If you want to change the display of OLED, you need to change here
     oled_write_ln(read_layer_state(), false);
+    oled_write_ln(read_keylock_state(), false);
     //oled_write_ln(read_keylog(), false);
     //oled_write_ln(read_keylogs(), false);
     //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
@@ -130,6 +150,7 @@ void oled_task_user(void) {
   }
 }
 #endif // OLED_DRIVER_ENABLE
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
