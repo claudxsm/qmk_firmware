@@ -34,35 +34,35 @@ enum { TD_QUOT = 0, TD_PAGING, TD_DASH, TD_CAPS };
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_BASE] = LAYOUT(
-  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
-  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_DELETE,
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_ESC,
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
   KC_LGUI, KC_A,    KC_S,    KC_D, LSFT_T(KC_F), KC_G,                    KC_H, RSFT_T(KC_J), KC_K,    KC_L,  KC_SCLN, TD(TD_QUOT),
-  TD(TD_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
-                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  _______, KC_CCCV
+  TD(TD_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_NO,     TG(_GAMING), KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_RSHIFT,
+                             KC_NO, KC_LALT, MO(_LOWER), LCTL_T(KC_SPC),  LT(_FN, KC_ENTER),  MO(_RAISE),  KC_LGUI, KC_CCCV
   ),
 
   [_GAMING] = LAYOUT(
   KC_GRV,  _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, KC_ESC,
   KC_TAB,  _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, KC_BSPC,
-  KC_MINUS,  _______, _______, _______, KC_F,    _______,                       _______, KC_J,    _______, _______, _______, _______,
-  KC_KP_PLUS,  _______, _______, _______, _______, _______, KC_HOME,     KC_ESC, _______, _______, _______, _______, _______, KC_TILD,
-                             KC_LCTL, KC_LALT, KC_LSFT, KC_SPC,      _______, KC_LGUI, _______, KC_ASTR
+  KC_MINUS,  _______, _______, _______, KC_F,    _______,                       _______, _______,    _______, _______, _______, _______,
+  KC_KP_PLUS,  _______, _______, _______, _______, _______, KC_HOME,     _______, _______, _______, _______, _______, _______, MO(_LOWER),
+                             KC_LCTL, KC_LALT, KC_LSFT, KC_SPC,      _______, _______, _______, _______
   ),
 
   [_LOWER] = LAYOUT(
-  KC_ESC,     KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS,                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, _______,
+  KC_ESC,     _______, _______, _______,   _______,  _______,                   _______, _______, _______, _______, _______, _______,
   _______,     KC_NO,   KC_NO,   KC_UP,     KC_NO,    KC_NO,                     KC_NO,   KC_7,   KC_8, KC_9,  KC_KP_MINUS,  _______,
   _______,     KC_NO,   KC_LEFT, KC_DOWN,   KC_RIGHT, KC_NO,                     KC_NO,   KC_4,   KC_5, KC_6,  KC_KP_PLUS,   KC_NO,
-  _______, KC_NO,   KC_HOME, TD(TD_PAGING), KC_END,   KC_NO,  KC_TRNS,   KC_NO,  KC_NO,   KC_1,   KC_2, KC_3,  KC_DOT,   KC_TRNS,
-                             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_UNRE
+  _______, KC_NO,   KC_HOME, TD(TD_PAGING), KC_END,   KC_NO,  _______,   KC_NO,  KC_NO,   KC_1,   KC_2, KC_3,  KC_DOT,   _______,
+                             _______, _______, _______, _______, _______, KC_0, _______, KC_UNRE
   ),
 
   [_RAISE] = LAYOUT(
   KC_TILD,  KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_NO,                                    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     _______,
-  _______,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   _______,
-  KC_TRNS, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                  KC_PLUS, TD(TD_DASH),  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
-  KC_TRNS, KC_NO,   KC_NO,  KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, KC_NO, KC_TRNS,   KC_NO,   KC_UNDS, KC_QUESTION, KC_LBRC, KC_RBRC, KC_PIPE,      KC_TRNS,
-                            KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_SELCUT
+  _______,  KC_EXLM, KC_AT,  KC_HASH,  KC_DLR,      KC_PERC,                                  KC_AMPR, KC_ASTR, KC_LCBR, KC_RCBR, KC_BSLS,   KC_DELETE,
+  _______, KC_NO,   KC_NO,  KC_NO,    KC_NO,       KC_CIRC,                                  KC_PLUS, TD(TD_DASH),  KC_LPRN, KC_RPRN, KC_COLON,  KC_GRV,
+  _______, KC_NO,   KC_NO,  KC_LEFT_ANGLE_BRACKET, KC_RIGHT_ANGLE_BRACKET, KC_NO, _______,   KC_NO,   KC_UNDS, KC_QUESTION, KC_LBRC, KC_RBRC, KC_PIPE,      _______,
+                            _______,  _______, _______, _______,  _______,  _______, _______, KC_SELCUT
   ),
 
   [_FN] = LAYOUT(
@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F12,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_VOLU,   KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
   RESET,   XXXXXXX, XXXXXXX, XXXXXXX, KC_INSERT, XXXXXXX, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_MPRV, XXXXXXX, XXXXXXX, XXXXXXX,
-                             _______, _______, _______, _______,  _______,  _______, TG(_GAMING), _______
+                             _______, _______, _______, _______,  _______,  _______, _______, _______
   )
 };
 
